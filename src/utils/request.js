@@ -15,10 +15,7 @@ function isFunction(fn) {
 }
 
 function buildServerApiRequest(params, url, type, callback) {
-  console.log(params)
-    console.log(url)
-    console.log(type)
-    console.log(callback)
+
   setToken();
   if ('get' == type) {
 	  params={params:params}

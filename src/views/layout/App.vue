@@ -10,6 +10,14 @@
             <span class="header-btn" @click="hiddenSidebar">
                 <i class="el-icon-menu"></i>
             </span>
+            <div class="left">
+                <span class="header-btn">搜索:</span>
+                <div class="header-btn">
+                    <el-input v-model="input" placeholder="请输入内容"
+                              @keyup.native.enter="search"
+                    ></el-input>
+                </div>
+            </div>
             <div class="right">
                 <span class="header-btn">城市：</span>
                 <div class="header-btn city">
@@ -81,10 +89,10 @@
                             title="消息提示"
                             width="200"
                             trigger="hover">
-                      <ul v-for="info in bellData">
-                         <!-- <a :href="'/#/article_detail?id='+info.articleId" >{{info.title}}</a>-->
-                          <router-link :to="'/article_detail?id='+info.articleId">{{info.title}}</router-link>
-                      </ul>
+                        <ul v-for="info in bellData">
+                            <!-- <a :href="'/#/article_detail?id='+info.articleId" >{{info.title}}</a>-->
+                            <router-link :to="'/article_detail?id='+info.articleId">{{info.title}}</router-link>
+                        </ul>
                         <el-badge :value="bells" class="badge" slot="reference">
                             <i class="el-icon-bell"></i>
                         </el-badge>
@@ -100,7 +108,8 @@
                         <el-dropdown-item @click.native="$router.push('/personal')"><i style="padding-right: 8px"
                                                                                        class="fa fa-cog"></i>个人中心
                         </el-dropdown-item>
-                        <el-dropdown-item @click.native="logout"><i style="padding-right: 8px" class="fa fa-key"></i>
+                        <el-dropdown-item @click.native="logout">
+                            <i style="padding-right: 8px" class="fa fa-key"></i>
                             退出系统
                         </el-dropdown-item>
                     </el-dropdown-menu>
@@ -167,8 +176,9 @@
     export default {
         data() {
             return {
+                input: "",
                 bells: 0,
-                bellData: [ ],
+                bellData: [],
                 websoket: {},
                 fixedTabBar: false,
                 switchTabBar: false,
@@ -908,6 +918,25 @@
             }
         },
         methods: {
+            search() {
+                var self = this;
+                var str = self.input;
+                if (str != null && str.trim().length > 0) {
+                    self.$router.push({
+                            name: "PostManage",
+                            params: {input: self.input}
+                        }
+                    )
+                }
+                else {
+                    self.$notify({
+                        title: '警告',
+                        message: '搜索内容不能为空',
+                        type: 'warning'
+                    });
+                }
+
+            },
             NavBarWidth() {
                 let navBar = document.getElementById('nav-bar');
                 if (!navBar) return;
@@ -980,22 +1009,19 @@
             },
             initwebSoket() {
                 let app = this;
-                console.log("app")
-                console.log(this)
                 let websoket = new WebSocket("ws://localhost:8081/message")
                 websoket.onopen = function () {
                     console.log("Socket 已打开");
                     //socket.send("这是来自客户端的消息" + location.href + new Date());
                     //发送用户的id
-                     websoket.send("1:" + app.$Config.userID);
+                    websoket.send("1:" + app.$Config.userID);
                 };
                 //获得消息事件
-                websoket.onmessage =function(msg)
-                {
+                websoket.onmessage = function (msg) {
 
                     app.bellData.push(JSON.parse(msg.data))
                     app.bells = app.bellData.length;
-                    console.log(app.bellData)
+
 
                 }
                 //关闭事件
@@ -1034,7 +1060,8 @@
         created: function () {
             this.initwebSoket();
 
-        }
+        },
+
     }
 </script>
 <style lang="less">
@@ -1164,6 +1191,10 @@
         .right {
             position: absolute;
             right: 0;
+        }
+        .center {
+            margin: 0 auto;
+            width: 200px;
         }
         .header-btn {
             .el-badge__content {
