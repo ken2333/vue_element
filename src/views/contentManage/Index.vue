@@ -32,7 +32,17 @@
             next(vm => {
                 console.log(vm)
             })
+        },
+        beforeRouteLeave(to, from, next)
+        {
+            console.log(to)
+            console.log(from)
+            console.log(next(vm=>{
+
+                console.log(vm)
+            }))
         }
+
 
 
     }

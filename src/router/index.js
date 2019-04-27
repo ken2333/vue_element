@@ -135,6 +135,6 @@ RouteList[0].children.push({
   component: resolve => require(['@/views/developmentTool/Build.vue'], resolve),
 });
 
-export default new Router({routes: RouteList})
+export default new Router({ mode: 'history',routes: RouteList})
 
 

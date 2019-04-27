@@ -92,7 +92,6 @@
         mounted: function () {
             this.paginate(0);
         },
-
     }
 </script>
 <style lang="less" scoped>
