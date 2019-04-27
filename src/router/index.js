@@ -103,7 +103,7 @@ let RouteList = [
                 title: '文章详情',
                 keepAlive: true
             },
-            component: resolve => require(['../views/contentManage/ArticleDetail.vue'], resolve),
+            component: resolve => require(['@/views/contentManage/ArticleDetail.vue'], resolve),
         },
       //个人中心，可能有修改密码，头像修改等路由
       Personal.index,

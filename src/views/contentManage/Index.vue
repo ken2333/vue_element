@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <Paginate
             api="articleIndexPage"
             :params="params"
@@ -16,7 +17,7 @@
   export default {
     data() {
       return {
-          params:{start:0,limit:25},
+          params:{start:0,limit:25,userID:this.$Config.userID},
           PaginateData:[],
           refresh:false
       }
