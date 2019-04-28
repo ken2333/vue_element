@@ -5,7 +5,8 @@
                 api="articleIndexPage"
                 :params="params"
                 :refresh="refresh"
-                @val-change="PaginateData">
+                @val-change="PaginateData"
+        >
         </Paginate>
     </div>
 </template>
@@ -19,29 +20,27 @@
             return {
                 input: "",
                 params: {start: 0, limit: 25, userID: this.$Config.userID,
-                    input: this.$route.params.input},
+                    input: this.$router.currentRoute.query.input},
                 PaginateData: [],
                 refresh: false
             }
         },
-        methods: {},
+        methods: {
+
+        },
         components: {
             Paginate
         },
-        beforeRouteUpdate (to, from, next) {
-            next(vm => {
-                console.log(vm)
-            })
-        },
-        beforeRouteLeave(to, from, next)
-        {
-            console.log(to)
-            console.log(from)
-            console.log(next(vm=>{
+       watch:{
+           '$route' (to, from) { //监听路由是否变化
+               if(to.query.input != from.query.input){
+                   console.log(to.query.input)
+                   this.params.input=to.query.input;
+                   this.refresh=!this.refresh;
+               }
+           }
+       }
 
-                console.log(vm)
-            }))
-        }
 
 
 

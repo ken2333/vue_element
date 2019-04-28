@@ -41,6 +41,7 @@
             api: String,
             params: Object,
             refresh: Boolean,
+            PaginateData:[]
         },
         data() {
             return {
@@ -69,7 +70,6 @@
                 this.current = page;
                 this.paginate(this.current);
             },
-
             todate: function (row, column) {
                 return new Date(row.createtime).toLocaleString();
             },

@@ -922,11 +922,18 @@
                 var self = this;
                 var str = self.input;
                 if (str != null && str.trim().length > 0) {
-                    self.$router.push({
+                /*    self.$router.push({
                             name: "PostManage",
                             params: {input: self.input}
                         }
+                    )*/
+                    self.$router.push(
+                        {
+                            path:"/post_manage?input="+str,
+
+                        }
                     )
+
                 }
                 else {
                     self.$notify({
