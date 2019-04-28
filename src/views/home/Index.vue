@@ -21,7 +21,7 @@
           <el-tag>今日热点</el-tag>
           <ul>
             <li v-for="ob in hot">
-              <a :href="ob.url">{{ob.title}}</a>
+              <router-link :to="ob.url">{{ob.title}}</router-link>
             </li>
           </ul>
         </el-aside>
@@ -44,41 +44,7 @@
 
               ]
           },
-          hot:[
-              {title:"中国区块链开发者真实现状;1",
-                url:"/article/123"
-          },
-              {title:"中国区块链开发者真实现状;2",
-                  url:"/article/123"
-              },
-              {title:"中国区块链开发者真实现状3:;",
-                  url:"/article/123"
-              },
-              {title:"中国区块链开发者真实现状:半数只懂皮毛; 数据分析师吃香; Java/Python或成为主流开发语言",
-                  url:"/article/123"
-              },{title:"中国区块链开发者真实现状:半数只懂皮毛; 数据分析师吃香; Java/Python或成为主流开发语言",
-                  url:"/article/123"
-              },
-              {title:"中国区块链开发者真实现状:半数只懂皮毛; 数据分析师吃香; Java/Python或成为主流开发语言",
-                  url:"/article/123"
-              },{title:"中国区块链开发者真实现状:半数只懂皮毛; 数据分析师吃香; Java/Python或成为主流开发语言",
-                  url:"/article/123"
-              },{title:"中国区块链开发者真实现状:半数只懂皮毛; 数据分析师吃香; Java/Python或成为主流开发语言",
-                  url:"/article/123"
-              },{title:"中国区块链开发者真实现状:半数只懂皮毛; 数据分析师吃香; Java/Python或成为主流开发语言",
-                  url:"/article/123"
-              },{title:"中国区块链开发者真实现状:半数只懂皮毛; 数据分析师吃香; Java/Python或成为主流开发语言",
-                  url:"/article/123"
-              },{title:"中国区块链开发者真实现状:半数只懂皮毛; 数据分析师吃香; Java/Python或成为主流开发语言",
-                  url:"/article/123"
-              },{title:"中国区块链开发者真实现状:半数只懂皮毛; 数据分析师吃香; Java/Python或成为主流开发语言",
-                  url:"/article/123"
-              },{title:"中国区块链开发者真实现状:半数只懂皮毛; 数据分析师吃香; Java/Python或成为主流开发语言",
-                  url:"/article/123"
-              },{title:"中国区块链开发者真实现状:半数只懂皮毛; 数据分析师吃香; Java/Python或成为主流开发语言",
-                  url:"/article/123"
-              },
-          ]
+          hot: [  ]
       }
     },
     methods: {
@@ -95,7 +61,15 @@
       }
     },
     mounted: function () {
-
+        //更新每日热点数据
+        this.$axios.post("/api/article/getDayHot",{}).then(res=>{
+           var data=res.data;
+            data.forEach(function (element) {
+                element.url="/article_detail?id="+element.id;
+            })
+            console.log(data)
+            this.hot=data;
+        })
     }
   }
 </script>
