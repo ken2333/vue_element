@@ -107,6 +107,15 @@ let RouteList = [
         },
       //个人中心，可能有修改密码，头像修改等路由
       Personal.index,
+        {
+            path: '/complaint',
+            name: 'complaint',
+            meta: {
+                title: '投诉申请',
+                keepAlive: true
+            },
+            component: resolve => require(['@/views/server/complaint.vue'], resolve),
+        },
     ],
 
   },

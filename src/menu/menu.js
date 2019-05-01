@@ -12,7 +12,7 @@ menu.home = {
 
 
 /**
- * 字体图标
+ * 在线服务
  * @type {{name: string, icon: string, children: {}}}
  */
 menu.font_icon = {
@@ -34,6 +34,19 @@ icon.element_icon = {
 icon.element_icon1 = {
     name: 'ElementIcon1',
     path: '/element_icon',
+};
+
+menu.server = {
+    name: '在线服务',
+    icon: 'el-icon-tickets ',
+    children: {}
+};
+let server = menu.server.children;
+
+server.font_awesome = {
+    name: '申请',
+    path: '/complaint',
+
 };
 
 /**

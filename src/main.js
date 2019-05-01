@@ -16,6 +16,7 @@ Vue.prototype.$Api = Api
 Vue.prototype.$Config = Config
 Vue.prototype.$Func = Function
 Vue.prototype.$axios  = axios
+
 Vue.use(ElementUI)
 
 

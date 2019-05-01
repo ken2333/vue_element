@@ -122,10 +122,8 @@
                 //获取内容
                 let id=this.$router.currentRoute.query.id;
                 this.$axios.post("/api/article/getById",{id:id}).then(res=>{
-
                     let data=res.data;
                     this.createTime= data.createTime;
-
                     this.pageview=data.pageview;
                     this.authorID=data.author;
                     this.articleID=data.id;

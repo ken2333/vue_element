@@ -29,6 +29,9 @@
                             @change="changecity"
                     ></el-cascader>
                 </div>
+                <span class="header-btn" @click="openAddressList">
+                    <i class="fa fa-address-card"></i>
+                </span>
                 <span class="header-btn" @click="screenfullToggle">
                     <i class="fa fa-arrows-alt"></i>
                 </span>
@@ -164,6 +167,44 @@
                 <EuiFooter></EuiFooter>
             </div>
         </div>
+        <el-dialog
+                title="在线通讯录"
+                :visible.sync="addressLine.centerDialogVisible"
+                width="30%" :modal="false" :modal-append-to-body="false" >
+            <el-table
+                    :data="addressLine.friendList"
+                    style="width: 100%" :show-header="false" @row-click="openFriend">
+                <el-table-column
+                        prop="userName"
+                        label="用户名称">
+                </el-table-column>
+                <el-table-column
+                        prop="status"
+                        label="状态">
+                </el-table-column>
+            </el-table>
+            <el-dialog
+                    width="50%"
+                    height="400px"
+                    :title="addressLine.currentFriend.userName"
+                    :visible.sync="addressLine.innerVisible"
+                    append-to-body>
+                <slot>
+                    <div>
+                            <ul class="message " v-for="message in addressLine.content"
+                                :class="{ 'left':!message.isSelf, 'right': message.isSelf}"
+                            >{{message.message}}</ul>
+                    </div>
+                    <el-input
+                            type="textarea"
+                            :autosize="{ minRows: 2, maxRows: 4}"
+                            placeholder="请输入内容"
+                            v-model="addressLine.input">
+                    </el-input>
+                </slot>
+            </el-dialog>
+
+        </el-dialog>
     </div>
 </template>
 
@@ -176,6 +217,15 @@
     export default {
         data() {
             return {
+                addressLine: {
+                    friendList: [{userID: 12, userName: "赵日天", status: "在线"},{userID: 12, userName: "管理员", status: "在线"}],
+                    innerVisible: false,
+                    centerDialogVisible: false,
+                    currentFriend:{},
+                    input:"",//输入的内容
+                    content:[{message:"内容",datetime:new Date(),isSelf:true},
+                        {message:"内容",datetime:new Date(),isSelf:false}],
+                },
                 input: "",
                 bells: 0,
                 bellData: [],
@@ -922,18 +972,16 @@
                 var self = this;
                 var str = self.input;
                 if (str != null && str.trim().length > 0) {
-                /*    self.$router.push({
-                            name: "PostManage",
-                            params: {input: self.input}
-                        }
-                    )*/
+                    /*    self.$router.push({
+                                name: "PostManage",
+                                params: {input: self.input}
+                            }
+                        )*/
                     self.$router.push(
                         {
-                            path:"/post_manage?input="+str,
-
+                            path: "/post_manage?input=" + str,
                         }
                     )
-
                 }
                 else {
                     self.$notify({
@@ -1039,8 +1087,17 @@
                 websoket.onerror = function () {
                     alert("Socket发生了错误");
                 }
+            },
+            openAddressList: function () {
+                this.addressLine.centerDialogVisible = !this.addressLine.centerDialogVisible;
+            },
+            openFriend: function (row, column, event) {
+                console.log(row)
+                    let self=this
+                    self.addressLine.currentFriend=row
+                    self.addressLine.innerVisible = !self.addressLine.innerVisible
+
             }
-            ,
         },
         mounted: function () {
 
@@ -1066,7 +1123,6 @@
         },
         created: function () {
             this.initwebSoket();
-
         },
 
     }
@@ -1247,5 +1303,15 @@
 
     .city {
         width: 200px;
+    }
+    ul.message{
+       padding: 20px;
+        font-size: 20px;
+    }
+    ul.message.left{
+        text-align: left;
+    }
+    ul.message.right{
+        text-align: right;
     }
 </style>
