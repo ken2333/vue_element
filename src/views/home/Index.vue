@@ -67,7 +67,6 @@
             data.forEach(function (element) {
                 element.url="/article_detail?id="+element.id;
             })
-            console.log(data)
             this.hot=data;
         })
     }

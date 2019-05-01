@@ -106,7 +106,7 @@
         }, '操作');
       },
       roleEditChange(data) {
-        console.log(data);
+
         let self = this;
 
         self.$notify({

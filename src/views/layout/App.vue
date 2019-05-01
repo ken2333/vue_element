@@ -199,7 +199,8 @@
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 4}"
                             placeholder="请输入内容"
-                            v-model="addressLine.input">
+                            v-model="addressLine.input"
+                            @keyup.enter.native="sendMssage">
                     </el-input>
                 </slot>
             </el-dialog>
@@ -218,7 +219,7 @@
         data() {
             return {
                 addressLine: {
-                    friendList: [{userID: 12, userName: "赵日天", status: "在线"},{userID: 12, userName: "管理员", status: "在线"}],
+                    friendList: [{userID: 3, userName: "java", status: "在线"},{userID: 12, userName: "管理员", status: "在线"}],
                     innerVisible: false,
                     centerDialogVisible: false,
                     currentFriend:{},
@@ -1062,7 +1063,7 @@
             changecity() {
                 this.$Config.city = this.city;
             },
-            initwebSoket() {
+            /*initwebSoket() {
                 let app = this;
                 let websoket = new WebSocket("ws://localhost:8081/message")
                 websoket.onopen = function () {
@@ -1087,16 +1088,25 @@
                 websoket.onerror = function () {
                     alert("Socket发生了错误");
                 }
-            },
+            },*/
             openAddressList: function () {
                 this.addressLine.centerDialogVisible = !this.addressLine.centerDialogVisible;
             },
             openFriend: function (row, column, event) {
-                console.log(row)
                     let self=this
                     self.addressLine.currentFriend=row
                     self.addressLine.innerVisible = !self.addressLine.innerVisible
 
+            },
+            sendMssage:function () {
+                var message="10:"+this.$Config.userID+":"+this.addressLine.currentFriend.userID+":"+this.addressLine.input
+                this.addressLine.input="";
+                this.socketApi.sendSock(message, this.addMessage);
+            },
+            //接受到数据后
+            addMessage:function (e) {
+                self=this;
+                console.log(e)
             }
         },
         mounted: function () {
@@ -1104,10 +1114,7 @@
             this.switchTabBar = localStorage.getItem('switchTabBar') ? true : false;
             this.fixedTabBar = localStorage.getItem('fixedTabBar') ? true : false;
             if (this.switchTabBar) document.getElementById('mainContainer').style.minHeight = 'calc(100vh - 139px)';
-
-
             if (!this.isCollapse) {
-
                 document.body.classList.remove('sidebar-hidden')
                 this.siteName = this.$Config.siteName
             } else {
@@ -1116,13 +1123,18 @@
 
             setTimeout(() => {
                 this.NavBarWidth();
-            }, 1000)
+            }, 1000);
+
+            //发送userID
+            this.socketApi.sendSock("1:"+this.$Config.userID,function () {
+                console.log("连接成功")
+            })
         },
         components: {
             EuiFooter, NavBar
         },
         created: function () {
-            this.initwebSoket();
+
         },
 
     }

@@ -9,6 +9,7 @@ import Config from './config/'
 import Api from './api/'
 import Function from './utils/'
 import axios from 'axios'
+import * as socketApi from './utils/socket'
 
 
 import App from './App.vue'
@@ -16,7 +17,7 @@ Vue.prototype.$Api = Api
 Vue.prototype.$Config = Config
 Vue.prototype.$Func = Function
 Vue.prototype.$axios  = axios
-
+Vue.prototype.socketApi = socketApi
 Vue.use(ElementUI)
 
 
